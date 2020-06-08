@@ -40,9 +40,10 @@ def normalize_data(df):
 def load_data(data, seq_len ):
     X_train = []
     y_train = []
+    data = data.values
     for i in range(seq_len, len(data)):
-        X_train.append(data.iloc[i-seq_len : i, : ])
-        y_train.append(data.iloc[i, :])
+        X_train.append(data[i-seq_len : i, : ])
+        y_train.append(data[i, :])
  
 
     train_size = int(0.7 * len(data))
@@ -112,13 +113,10 @@ print('y_test.shape = ',y_test.shape)
     
 lstm_model = Sequential()
 
-lstm_model.add(LSTM(20,activation="tanh",return_sequences=True, input_shape=(X_train.shape[1],1)))
+lstm_model.add(LSTM(30,activation="tanh",return_sequences=True, input_shape=(X_train.shape[1],6)))
 lstm_model.add(Dropout(0.2))
 
-lstm_model.add(LSTM(20,activation="tanh",return_sequences=True))
-lstm_model.add(Dropout(0.2))
-
-lstm_model.add(LSTM(40,activation="tanh",return_sequences=False))
+lstm_model.add(LSTM(30,activation="tanh",return_sequences=False))
 lstm_model.add(Dropout(0.2))
 
 lstm_model.add(Dense(6))
@@ -128,7 +126,7 @@ lstm_model.compile(optimizer="adam",loss="MSE")
 lstm_model.fit(X_train, y_train, epochs=10, batch_size=1000)
 lstm_predictions = lstm_model.predict(X_test)
 
-lstm_score = r2_score(y_test, )
+lstm_score = r2_score(y_test, lstm_predictions)
 print("R^2 Score of LSTM model = ",lstm_score)
 plot_predictions(y_test, lstm_preictions, "Predictions made by LSTM model")
 plt.figure(figsize=(15,8))
