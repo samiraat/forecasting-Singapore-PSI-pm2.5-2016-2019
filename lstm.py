@@ -114,13 +114,11 @@ for j in column.keys() :
     rnn_model = Sequential()
 
     rnn_model.add(SimpleRNN(40,activation="tanh",return_sequences=True, input_shape=(X_train.shape[1],1)))
-    rnn_model.add(Dropout(0.15))
+    rnn_model.add(Dropout(0.2))
 
-    rnn_model.add(SimpleRNN(40,activation="tanh",return_sequences=True))
-    rnn_model.add(Dropout(0.15))
+    rnn_model.add(SimpleRNN(40,activation="tanh"))
+    rnn_model.add(Dropout(0.2))
 
-    rnn_model.add(SimpleRNN(40,activation="tanh",return_sequences=False))
-    rnn_model.add(Dropout(0.15))
 
     rnn_model.add(Dense(1))
 
@@ -138,13 +136,12 @@ for j in column.keys() :
     lstm_model = Sequential()
 
     lstm_model.add(LSTM(40,activation="tanh",return_sequences=True, input_shape=(X_train.shape[1],1)))
-    lstm_model.add(Dropout(0.15))
+    lstm_model.add(Dropout(0.2))
 
-    lstm_model.add(LSTM(40,activation="tanh",return_sequences=True))
-    lstm_model.add(Dropout(0.15))
+    lstm_model.add(LSTM(40,activation="tanh"))
+    lstm_model.add(Dropout(0.2))
 
-    lstm_model.add(LSTM(40,activation="tanh",return_sequences=False))
-    lstm_model.add(Dropout(0.15))
+
 
     lstm_model.add(Dense(1))
 
@@ -155,6 +152,10 @@ for j in column.keys() :
 
     lstm_score = r2_score(y_test, lstm_predictions)
     print("R^2 Score of LSTM model = ",lstm_score)
+    lstm_mpe = np.mean((lstm_predictions - y_test)/y_test)   # MPE
+    lstm_rmse = np.mean((lstm_predictions - y_test)**2)**.5  # RMS
+    print("MpE Score of LSTM model = ",lstm_mpe)
+    print("RMS Score of LSTM model = ",lstm_rmse)
     plot_predictions(y_test, lstm_predictions, "Predictions made by LSTM model")
     plt.figure(figsize=(15,8))
 
