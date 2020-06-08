@@ -109,33 +109,6 @@ print('y_train.shape = ', y_train.shape)
 print('X_test.shape = ', X_test.shape)
 print('y_test.shape = ',y_test.shape)
 
-
-
-rnn_model = Sequential()
-
-rnn_model.add(SimpleRNN(20,activation="tanh",return_sequences=True, input_shape=(X_train.shape[1],1)))
-rnn_model.add(Dropout(0.2))
-
-rnn_model.add(SimpleRNN(20,activation="tanh",return_sequences=True))
-rnn_model.add(Dropout(0.2))
-
-rnn_model.add(SimpleRNN(20,activation="tanh",return_sequences=False))
-rnn_model.add(Dropout(0.2))
-
-rnn_model.add(Dense(1))
-
-rnn_model.summary()
-
-rnn_model.compile(optimizer="adam",loss="MSE")
-rnn_model.fit(X_train, y_train, epochs=10, batch_size=1000)
-rnn_predictions = rnn_model.predict(X_test)
-rnn_score = r2_score(y_test,rnn_predictions)
-print("accuracy of RNN model = ",rnn_score)
-rmse = np.sqrt(mean_squared_error(y_test, rnn_predictions))
-print('Test RMSE: %.3f' % rmse)
-
-
-plot_predictions(y_test, rnn_predictions, "Predictions made by simple RNN model")
     
 lstm_model = Sequential()
 
@@ -159,11 +132,4 @@ lstm_score = r2_score(y_test, )
 print("R^2 Score of LSTM model = ",lstm_score)
 plot_predictions(y_test, lstm_preictions, "Predictions made by LSTM model")
 plt.figure(figsize=(15,8))
-
-plt.plot(y_test, c="orange", linewidth=3, label="Original values")
-plt.plot(lstm_predictions, c="red", linewidth=3, label="LSTM predictions")
-plt.plot(rnn_predictions, alpha=0.5, c="green", linewidth=3, label="RNN predictions")
-plt.legend()
-plt.title("Predictions vs actual data", fontsize=20)
-plt.show()
 
