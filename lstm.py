@@ -85,6 +85,10 @@ print(df_norm)
 df_norm.plot(subplots=True, figsize=(8, 8)); plt.legend(loc='best')
 plt.suptitle('hourly PM2.5 concentration - AFTER NORMALIZATION')
 plt.show()
+plt.matshow(df.corr(method='spearman'),vmax=1,vmin=-1,cmap='PRGn')
+plt.title('Correlation columns', size=15)
+plt.colorbar()
+plt.show()
 column = {0 : 'national',1 : 'south',2 : 'north',3 : 'east',4 :'central',5 : 'west'}
 for j in column.keys() :
     print("LSTM model for pm2.5 concentration on " + column[j]  + " station")
